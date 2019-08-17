@@ -40,10 +40,13 @@ namespace :resque do
   # Preload app files if this is Rails
   task :preload => :setup do
     if defined?(Rails)
-      if Rails.application.config.eager_load
-        ActiveSupport.run_load_hooks(:before_eager_load, Rails.application)
-        Rails.application.config.eager_load_namespaces.each(&:eager_load!)
-      end
+      # This is copied from the previous release. It was removed, but supports rails 3.2
+      ActiveSupport.run_load_hooks(:before_eager_load, Rails.application)
+      Rails.application.eager_load!
+      #if Rails.application.config.eager_load
+      #  ActiveSupport.run_load_hooks(:before_eager_load, Rails.application)
+      #  Rails.application.config.eager_load_namespaces.each(&:eager_load!)
+      #end
     end
   end
 
